@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { SmoothScroll } from "./_components/SmoothScroll";
-import "./globals.scss";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { WindowInfoProvider } from "@faceless-ui/window-info";
 
-const inter = Inter({ subsets: ["latin"] });
+import { SmoothScroll } from "./_layout/SmoothScroll";
+import { Footer } from "./_layout/Footer";
+
+import "./globals.scss";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -18,7 +21,10 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<SmoothScroll>
-				<body className={inter.className}>{children}</body>
+				<body className={GeistSans.className}>
+					<main>{children}</main>
+					<Footer />
+				</body>
 			</SmoothScroll>
 		</html>
 	);

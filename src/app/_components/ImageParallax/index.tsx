@@ -42,6 +42,7 @@ export const ImageParallax = () => {
 		offset: ["start end", "end start"],
 	});
 
+	// TODO: use window height as a base for the translate
 	const trns1 = useTransform(scrollYProgress, [0, 1], [0, 1700]);
 	const trns2 = useTransform(scrollYProgress, [0, 1], [0, 3200]);
 	const trns3 = useTransform(scrollYProgress, [0, 1], [0, 1250]);
