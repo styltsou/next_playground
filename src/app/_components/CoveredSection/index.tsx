@@ -2,8 +2,9 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
+import { withTooltip } from "../_lib/ComponentTooltip/withSectionTooltip";
 
-export const CoveredSection = () => {
+const CoveredSectionComponent = () => {
 	const container = useRef(null);
 
 	const { scrollYProgress } = useScroll({
@@ -26,3 +27,8 @@ export const CoveredSection = () => {
 		</div>
 	);
 };
+
+export const CoveredSection = withTooltip(
+	CoveredSectionComponent,
+	"CoveredSection"
+);

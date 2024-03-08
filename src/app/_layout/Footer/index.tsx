@@ -2,8 +2,9 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
 import { useRef } from "react";
+import { withTooltip } from "@/app/_components/_lib/ComponentTooltip/withSectionTooltip";
 
-export const Footer = () => {
+const FooterComponent = () => {
 	const footerContainer = useRef(null);
 
 	const { scrollYProgress } = useScroll({
@@ -26,3 +27,5 @@ export const Footer = () => {
 		</footer>
 	);
 };
+
+export const Footer = withTooltip(FooterComponent, "Footer");

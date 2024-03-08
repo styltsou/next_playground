@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { WindowInfoProvider } from "@faceless-ui/window-info";
-
+import { Providers } from "./_providers";
 import { SmoothScroll } from "./_layout/SmoothScroll";
 import { Footer } from "./_layout/Footer";
 
 import "./globals.scss";
+import { ComponentToolTip } from "./_components/_lib/ComponentTooltip";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -20,12 +20,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<SmoothScroll>
-				<body className={GeistSans.className}>
-					<main>{children}</main>
-					<Footer />
-				</body>
-			</SmoothScroll>
+			<Providers>
+				<SmoothScroll>
+					<body className={GeistSans.className}>
+						<main>{children}</main>
+						<Footer />
+					</body>
+				</SmoothScroll>
+			</Providers>
 		</html>
 	);
 }
