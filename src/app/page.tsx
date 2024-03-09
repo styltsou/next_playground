@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 import { ImageParallax } from "./_components/ImageParallax";
 import { CoveredSection } from "./_components/CoveredSection";

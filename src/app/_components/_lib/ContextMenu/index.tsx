@@ -2,10 +2,20 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useComponentTooltip } from "../ComponentTooltip/provider";
+import { useScrollLock } from "@/app/_hooks/useScrollLock";
 import { useOnClickOutside } from "@/app/_hooks/useOnClickOutside";
+import { cn } from "@/app/_utils/cn";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
 import classes from "./index.module.scss";
+
+// TODO: Find a way to FUCKING LOCK Lenis Scroll
+
+type ViewportQuadrant =
+	| "top-left"
+	| "bottom-left"
+	| "top-right"
+	| "bottom-right";
 
 const animationVariants = {
 	initial: { opacity: 0.5, scale: 0.9 },
@@ -18,6 +28,10 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 	const menuRef = useRef(null);
 
+	// const { lock, unlock } = useScrollLock({
+	// 	autoLock: false,
+	// });
+
 	const {
 		setIsTooltipVisible,
 		isTooltipEnabled,
@@ -28,18 +42,39 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 
 	const [isActive, setIsActive] = useState<boolean>(false);
 
-	const [mouseX, setMouseX] = useState<number>(0);
-	const [mouseY, setMouseY] = useState<number>(0);
+	// Menu position
+	const [x, setX] = useState<number>(0);
+	const [y, setY] = useState<number>(0);
+
+	// Viewport quadrant where the menu was opened
+	const [viewportQuadrant, setViewportQuadrant] =
+		useState<ViewportQuadrant>("top-left");
 
 	const openContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		// Add this to trigger presence animations every time
+		// lock();
 		setIsActive(false);
 
-		setMouseX(e.clientX);
-		setMouseY(e.clientY);
+		// Calculate the viewport quadrant that way in order to specify
+		// the appropriate transform orgin to the menu (for presence animation)
+		const horizontalOrientation =
+			e.clientX <= window.innerWidth / 2 ? "left" : "right";
+		const verticalOrientation =
+			e.clientY <= window.innerHeight / 2 ? "top" : "bottom";
 
-		// TODO: Calculate transform-origing and menus position relative to the mouse
+		setViewportQuadrant(`${verticalOrientation}-${horizontalOrientation}`);
+
+		// TODO: Find a way to dynamically calculate context menu dimensions
+		const menuW = 224;
+		const menuH = 105;
+		let menuOffset = {
+			x: horizontalOrientation === "left" ? 0 : -menuW,
+			y: verticalOrientation === "top" ? 0 : -menuH,
+		};
+
+		setX(e.clientX + menuOffset.x);
+		setY(e.clientY + menuOffset.y);
 
 		setIsActive(true);
 		setIsTooltipVisible(false);
@@ -48,6 +83,7 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 	const closeContextMenu = () => {
 		setIsTooltipVisible(true);
 		setIsActive(false);
+		// unlock();
 	};
 
 	const handleEnableToolTip = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -74,11 +110,11 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 				{isActive && (
 					<motion.div
 						ref={menuRef}
-						className={classes.menu}
+						className={cn(classes.menu, classes[viewportQuadrant])}
 						initial={animationVariants.initial}
 						animate={animationVariants.enter}
 						exit={animationVariants.exit}
-						style={{ x: mouseX, y: mouseY }}
+						style={{ x, y }}
 					>
 						<button onClick={handleEnableToolTip}>
 							<span className={classes.label}>

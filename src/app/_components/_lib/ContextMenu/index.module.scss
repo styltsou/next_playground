@@ -62,4 +62,20 @@
 			border-top: 1px solid #aeaeae;
 		}
 	}
+
+	&.top-left {
+		transform-origin: top left;
+	}
+
+	&.top-right {
+		transform-origin: top right;
+	}
+
+	&.bottom-left {
+		transform-origin: bottom left;
+	}
+
+	&.bottom-right {
+		transform-origin: bottom right;
+	}
 }
