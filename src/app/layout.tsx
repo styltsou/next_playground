@@ -3,10 +3,10 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Providers } from "./_providers";
 import { SmoothScroll } from "./_layout/SmoothScroll";
+import { ContextMenu } from "./_components/_lib/ContextMenu";
 import { Footer } from "./_layout/Footer";
 
 import "./globals.scss";
-import { ComponentToolTip } from "./_components/_lib/ComponentTooltip";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -22,9 +22,13 @@ export default function RootLayout({
 		<html lang='en'>
 			<Providers>
 				<SmoothScroll>
-					<body className={GeistSans.className}>
-						<main>{children}</main>
-						<Footer />
+					<body
+						className={[GeistSans.className, GeistMono.className].join(" ")}
+					>
+						<ContextMenu>
+							<main>{children}</main>
+							<Footer />
+						</ContextMenu>
 					</body>
 				</SmoothScroll>
 			</Providers>

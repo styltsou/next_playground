@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
-import { withTooltip } from "../_lib/ComponentTooltip/withSectionTooltip";
+import { withTooltip } from "../_lib/ComponentTooltip/withTooltip";
 
 const CoveredSectionComponent = () => {
 	const container = useRef(null);

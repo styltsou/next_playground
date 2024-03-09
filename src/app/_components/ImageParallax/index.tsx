@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
-import { withTooltip } from "../_lib/ComponentTooltip/withSectionTooltip";
+import { withTooltip } from "../_lib/ComponentTooltip/withTooltip";
 
 const images = [
 	"https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -48,10 +48,6 @@ const ImageParallaxComponent = () => {
 	const trns2 = useTransform(scrollYProgress, [0, 1], [0, 3200]);
 	const trns3 = useTransform(scrollYProgress, [0, 1], [0, 1250]);
 	const trns4 = useTransform(scrollYProgress, [0, 1], [0, 3000]);
-
-	useEffect(() => {
-		console.log(scrollYProgress);
-	}, [scrollYProgress]);
 
 	return (
 		<section ref={galleryContainer} className={classes.wrapper}>

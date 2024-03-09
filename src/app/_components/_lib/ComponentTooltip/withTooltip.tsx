@@ -9,20 +9,24 @@ export const withTooltip = <P extends object>(
 ) => {
 	// eslint-disable-next-line react/display-name
 	return (props: P) => {
-		const { isEnabled, setComponentName } = useComponentTooltip();
+		const { isTooltipEnabled, setComponentName } = useComponentTooltip();
 
 		const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
 			e.stopPropagation();
-			if (isEnabled) setComponentName(tooltipLabel || "Not Defined");
+			if (isTooltipEnabled) setComponentName(tooltipLabel || "Not Defined");
 		};
 
 		const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
 			e.stopPropagation();
-			if (isEnabled) setComponentName("");
+			if (isTooltipEnabled) setComponentName("");
 		};
 
 		return (
-			<div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+			<div
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				id={tooltipLabel}
+			>
 				<WrappedComponent {...props} />
 			</div>
 		);

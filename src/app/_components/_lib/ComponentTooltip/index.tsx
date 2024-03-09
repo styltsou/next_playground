@@ -5,11 +5,21 @@ import { useComponentTooltip } from "./provider";
 import classes from "./index.module.scss";
 import { useMouseInfo } from "@faceless-ui/mouse-info";
 
+const tooltipVariants = {
+	initial: { opacity: 0, scale: 0.7 },
+	enter: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
+	exit: { opacity: 0, scale: 0.7, transition: { duration: 0.1 } },
+};
+
 export const ComponentToolTip = () => {
 	const { x: mouseX, y: mouseY } = useMouseInfo();
 
-	const { isEnabled, currentComponentName, toggleTooltip } =
-		useComponentTooltip();
+	const {
+		isTooltipEnabled,
+		isTooltipVisible,
+		currentComponentName,
+		toggleTooltip,
+	} = useComponentTooltip();
 
 	useEffect(() => {
 		const handleKeyPress = (event: KeyboardEvent) => {
@@ -29,20 +39,22 @@ export const ComponentToolTip = () => {
 	return (
 		<Fragment>
 			<AnimatePresence>
-				{isEnabled && currentComponentName !== "" && (
-					<motion.div
-						className={classes.wrapper}
-						initial={{ opacity: 0, scale: 0.7 }}
-						animate={{ opacity: 1, scale: 1, transition: { duration: 0.1 } }}
-						exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.1 } }}
-						style={{
-							x: mouseX,
-							y: mouseY,
-						}}
-					>
-						{currentComponentName}
-					</motion.div>
-				)}
+				{isTooltipEnabled &&
+					isTooltipVisible &&
+					currentComponentName !== "" && (
+						<motion.div
+							className={classes.wrapper}
+							initial={tooltipVariants.initial}
+							animate={tooltipVariants.enter}
+							exit={tooltipVariants.initial}
+							style={{
+								x: mouseX,
+								y: mouseY,
+							}}
+						>
+							{currentComponentName}
+						</motion.div>
+					)}
 			</AnimatePresence>
 		</Fragment>
 	);
