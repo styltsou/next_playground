@@ -52,8 +52,8 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 
 	const openContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault();
-		// Add this to trigger presence animations every time
 		// lock();
+		// Add this to trigger presence animations every time
 		setIsActive(false);
 
 		// Calculate the viewport quadrant that way in order to specify
