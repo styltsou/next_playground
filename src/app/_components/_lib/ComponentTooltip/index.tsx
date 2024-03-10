@@ -1,9 +1,10 @@
 "use client";
 import { Fragment, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useComponentTooltip } from "./provider";
-import classes from "./index.module.scss";
 import { useMouseInfo } from "@faceless-ui/mouse-info";
+import { useBoundStore } from "@/app/_store";
+import { cn } from "@/app/_utils/cn";
+import classes from "./index.module.scss";
 
 const tooltipVariants = {
 	initial: { opacity: 0, scale: 0.7 },
@@ -11,20 +12,27 @@ const tooltipVariants = {
 	exit: { opacity: 0, scale: 0.7, transition: { duration: 0.1 } },
 };
 
-export const ComponentToolTip = () => {
+export const ComponentToolTip: React.FC<{ blackText: boolean }> = ({
+	blackText,
+}) => {
 	const { x: mouseX, y: mouseY } = useMouseInfo();
 
 	const {
 		isTooltipEnabled,
 		isTooltipVisible,
-		currentComponentName,
+		currentComponentLabel,
 		toggleTooltip,
-	} = useComponentTooltip();
+		toggleHighlight,
+	} = useBoundStore();
 
 	useEffect(() => {
 		const handleKeyPress = (event: KeyboardEvent) => {
 			if (event.key === "t") {
 				toggleTooltip();
+			}
+
+			if (event.key === "h") {
+				toggleHighlight();
 			}
 		};
 
@@ -41,9 +49,12 @@ export const ComponentToolTip = () => {
 			<AnimatePresence>
 				{isTooltipEnabled &&
 					isTooltipVisible &&
-					currentComponentName !== "" && (
+					currentComponentLabel !== null && (
 						<motion.div
-							className={classes.wrapper}
+							className={cn(
+								classes.wrapper,
+								blackText == true && classes.blackText
+							)}
 							initial={tooltipVariants.initial}
 							animate={tooltipVariants.enter}
 							exit={tooltipVariants.initial}
@@ -52,7 +63,7 @@ export const ComponentToolTip = () => {
 								y: mouseY,
 							}}
 						>
-							{currentComponentName}
+							{currentComponentLabel}
 						</motion.div>
 					)}
 			</AnimatePresence>

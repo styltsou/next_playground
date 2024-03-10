@@ -1,6 +1,5 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useComponentTooltip } from "../ComponentTooltip/provider";
 import classes from "./index.module.scss";
 
 const variants = {
@@ -17,14 +16,12 @@ const variants = {
 	},
 };
 
-export const ComponentHiglight: React.FC<{ isHighlighted: boolean }> = ({
-	isHighlighted,
+export const ComponentHiglight: React.FC<{ isVisible: boolean }> = ({
+	isVisible,
 }) => {
-	const { isHighlightEnabled } = useComponentTooltip();
-
 	return (
 		<AnimatePresence>
-			{isHighlightEnabled && isHighlighted && (
+			{isVisible && (
 				<motion.div
 					className={classes.highlight}
 					initial={variants.initial}

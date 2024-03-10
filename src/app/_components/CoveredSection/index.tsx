@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
-import { withTooltip } from "../_lib/ComponentTooltip/withTooltip";
+import { withMarkers } from "../_lib/hoc/withMarkers";
 
 const CoveredSectionComponent = () => {
 	const container = useRef(null);
@@ -28,7 +28,7 @@ const CoveredSectionComponent = () => {
 	);
 };
 
-export const CoveredSection = withTooltip(
+export const CoveredSection = withMarkers(
 	CoveredSectionComponent,
 	"CoveredSection"
 );

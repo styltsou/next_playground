@@ -1,8 +1,9 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useComponentTooltip } from "../ComponentTooltip/provider";
 import { useScrollLock } from "@/app/_hooks/useScrollLock";
+import { useBoundStore } from "@/app/_store";
+import { availalbeMarkerColors } from "../constants";
 import { useOnClickOutside } from "@/app/_hooks/useOnClickOutside";
 import { cn } from "@/app/_utils/cn";
 import { IoCheckmarkOutline } from "react-icons/io5";
@@ -38,7 +39,9 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 		isHighlightEnabled,
 		toggleTooltip,
 		toggleHighlight,
-	} = useComponentTooltip();
+		markerColor,
+		setMarkerColor,
+	} = useBoundStore();
 
 	const [isActive, setIsActive] = useState<boolean>(false);
 
@@ -96,12 +99,36 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 		closeContextMenu();
 	};
 
+	const handleSelectColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const color =
+			availalbeMarkerColors.find((color) => color.hexCode === e.target.value) ||
+			availalbeMarkerColors[0];
+
+		setMarkerColor(color);
+		closeContextMenu();
+	};
+
 	const handleListComponents = (e: React.MouseEvent<HTMLButtonElement>) => {
-		// TODO: Trigger a model to show the registered components of that page
+		// TODO: Trigger a modal to show the registered components of that page
 		closeContextMenu();
 	};
 
 	useOnClickOutside(menuRef, closeContextMenu);
+
+	useEffect(() => {
+		const handleKeyPress = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				closeContextMenu();
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyPress);
+
+		return () => {
+			document.removeEventListener("keydown", handleKeyPress);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div onContextMenu={openContextMenu}>
@@ -145,6 +172,31 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 							</span>
 							<span className={classes.hotKey}>C</span>
 						</button>
+						<div className={classes.colorsSelector}>
+							{availalbeMarkerColors.map((color) => (
+								<label
+									key={color.label}
+									htmlFor={color.label}
+									className={classes.radioLabel}
+								>
+									<input
+										type='radio'
+										name='colors'
+										id={color.label}
+										value={color.hexCode}
+										checked={color.label === markerColor.label}
+										onChange={handleSelectColorChange}
+									/>
+									<span
+										className={classes.customRadio}
+										style={{
+											backgroundColor: color.hexCode,
+											outlineColor: color.hexCode,
+										}}
+									/>
+								</label>
+							))}
+						</div>
 					</motion.div>
 				)}
 			</AnimatePresence>

@@ -2,7 +2,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import classes from "./index.module.scss";
 import { useRef } from "react";
-import { withTooltip } from "@/app/_components/_lib/ComponentTooltip/withTooltip";
+import { withMarkers } from "@/app/_components/_lib/hoc/withMarkers";
 
 const FooterComponent = () => {
 	const footerContainer = useRef(null);
@@ -28,4 +28,4 @@ const FooterComponent = () => {
 	);
 };
 
-export const Footer = withTooltip(FooterComponent, "Footer");
+export const Footer = withMarkers(FooterComponent, "Footer");
