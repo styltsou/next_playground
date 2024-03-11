@@ -6,11 +6,17 @@ import { useBoundStore } from "@/app/_store";
 import { availalbeMarkerColors } from "../constants";
 import { useOnClickOutside } from "@/app/_hooks/useOnClickOutside";
 import { cn } from "@/app/_utils/cn";
+import { Modal } from "../Modal";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
 import classes from "./index.module.scss";
+import { useModal } from "../Modal/provider";
 
 // TODO: Find a way to FUCKING LOCK Lenis Scroll
+
+// TODO: Maybe mmake contextMenu a more generic primitive that accepts children
+// Then I can also extract the menu in a seperate component and render it invisible
+// This way I will also solve the problem of getting the menu size before the actual menu mounts
 
 type ViewportQuadrant =
 	| "top-left"
@@ -110,6 +116,7 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 
 	const handleListComponents = (e: React.MouseEvent<HTMLButtonElement>) => {
 		// TODO: Trigger a modal to show the registered components of that page
+		openModal("component-list");
 		closeContextMenu();
 	};
 
@@ -129,6 +136,8 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	const { openModal } = useModal();
 
 	return (
 		<div onContextMenu={openContextMenu}>
@@ -200,6 +209,7 @@ export const ContextMenu: React.FC<{ children: React.ReactNode }> = ({
 					</motion.div>
 				)}
 			</AnimatePresence>
+			<Modal slug='component-list'>This is a modal box</Modal>
 		</div>
 	);
 };

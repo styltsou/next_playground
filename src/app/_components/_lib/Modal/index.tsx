@@ -1,16 +1,39 @@
+"use client";
+import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useModal } from "./provider";
+import { useOnClickOutside } from "@/app/_hooks/useOnClickOutside";
 import { cn } from "@/app/_utils/cn";
 import classes from "./index.module.scss";
 
 export const Modal: React.FC<{
-	className: string;
+	slug: string;
 	children: React.ReactNode;
-}> = ({ className, children }) => {
+	className?: string;
+}> = ({ slug, className, children }) => {
+	const modalRef = useRef(null);
+
+	const { isModalOpen, closeModal } = useModal();
+
+	useOnClickOutside(modalRef, () => {
+		closeModal(slug);
+	});
+
 	return (
 		<div className={classes.fixedContainer}>
-			<div className={classes.wrapper}>
-				<div className={classes.overlay} />
-				<div className={cn(classes.modalContainer, className)}>{children}</div>
-			</div>
+			<AnimatePresence>
+				{isModalOpen(slug) && (
+					<motion.div className={classes.wrapper}>
+						<motion.div className={classes.overlay} />
+						<motion.div
+							ref={modalRef}
+							className={cn(classes.modalContainer, className)}
+						>
+							{children}
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };

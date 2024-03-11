@@ -86,6 +86,7 @@
 				position: absolute;
 				top: 0;
 				left: 0;
+				// cursor: pointer;
 
 				&:checked {
 					&~.customRadio {
@@ -100,6 +101,7 @@
 				display: block;
 				border: 2px solid white;
 				border-radius: 100%;
+				cursor: pointer;
 
 				&:hover {
 					outline: 1px solid;
